@@ -1,0 +1,15 @@
+export enum TokenType {
+  Identifier = 'Identifier',
+  IntLiteral = 'IntLiteral',
+  GT = 'GT',
+  GE = 'GE',
+  Plus = 'Plus',
+  Minus = 'Minus',
+  Star = 'Star',
+  Slash = 'Slash',
+  SemiColon = 'SemiColon',
+  LeftParen = 'LeftParen',
+  RightParen = 'RightParen',
+  Assignment = 'Assignment',
+  Int = 'Int',
+}
