@@ -8,7 +8,7 @@
 
 import SimpleTokenReader from './SimpleTokenReader'
 import Token from './Token'
-import { TokenType } from './TokenType'
+import { TokenType } from './types/TokenType'
 
 enum DfaState {
   Initial,

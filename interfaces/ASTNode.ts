@@ -1,4 +1,4 @@
-import { ASTNodeType } from './ASTNodeType'
+import { ASTNodeType } from '../types/ASTNodeType'
 
 export interface ASTNode {
   getParent(): ASTNode | null

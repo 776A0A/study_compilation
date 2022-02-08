@@ -1,5 +1,5 @@
-import { ASTNodeType } from './ASTNodeType'
-import { ASTNode } from './ASTNode'
+import { ASTNode } from './interfaces/ASTNode'
+import { ASTNodeType } from './types/ASTNodeType'
 
 export default class SimpleASTNode implements ASTNode {
   parent: SimpleASTNode | null = null

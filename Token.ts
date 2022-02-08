@@ -1,4 +1,4 @@
-import { TokenType } from './TokenType'
+import { TokenType } from './types/TokenType'
 
 export default class Token {
   text = ''
@@ -6,5 +6,9 @@ export default class Token {
 
   getText() {
     return this.text
+  }
+
+  getType() {
+    return this.type
   }
 }

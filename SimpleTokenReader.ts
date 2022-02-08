@@ -1,5 +1,5 @@
+import { TokenReader } from './interfaces/TokenReader'
 import Token from './Token'
-import { TokenReader } from './TokenReader'
 
 export default class SimpleTokenReader implements TokenReader {
   tokens: Token[] = []
@@ -9,7 +9,7 @@ export default class SimpleTokenReader implements TokenReader {
     this.tokens = tokens
   }
 
-  peek(): Token {
+  peek() {
     if (this.pos < this.tokens.length) {
       return this.tokens[this.pos++]
     }
