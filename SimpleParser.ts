@@ -1,3 +1,4 @@
+import { chalk } from 'zx'
 import { ASTNode } from './interfaces/ASTNode'
 import { TokenReader } from './interfaces/TokenReader'
 import SimpleASTNode from './SimpleASTNode'
@@ -7,10 +8,9 @@ import { TokenType } from './types/TokenType'
 
 export default class SimpleParser {
   constructor() {
-    let tree: ASTNode | null = null
-
-    tree = this.parse('int age = 45+2; age= 20; age+10*2;')
-    this.dumpAST(tree, '')
+    // let tree: ASTNode | null = null
+    // tree = this.parse('int age = 45 + 2 ; age = 20 ; age + 10 * 2 ;')
+    // this.dumpAST(tree, '')
   }
 
   parse(script: string) {
@@ -213,7 +213,7 @@ export default class SimpleParser {
   }
 
   dumpAST(node: ASTNode, indent: string) {
-    console.log(`${indent}${node.getType()} ${node.getText()}`)
+    console.log(chalk.cyan(`${indent}${node.getType()} ${node.getText()}`))
 
     for (let child of node.getChildren()) this.dumpAST(child, indent + '\t')
   }
