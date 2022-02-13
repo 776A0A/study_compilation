@@ -11,36 +11,36 @@ import Token from './Token'
 import { TokenType } from './types/TokenType'
 
 enum DfaState {
-  Initial,
+  Initial = 'Initial',
 
-  If,
-  Id_if1,
-  Id_if2,
-  Else,
-  Id_else1,
-  Id_else2,
-  Id_else3,
-  Id_else4,
-  Int,
-  Id_int1,
-  Id_int2,
-  Id_int3,
-  Id,
-  GT,
-  GE,
+  If = 'If',
+  Id_if1 = 'Id_if1',
+  Id_if2 = 'Id_if2',
+  Else = 'Else',
+  Id_else1 = 'Id_else1',
+  Id_else2 = 'Id_else2',
+  Id_else3 = 'Id_else3',
+  Id_else4 = 'Id_else4',
+  Int = 'Int',
+  Id_int1 = 'Id_int1',
+  Id_int2 = 'Id_int2',
+  Id_int3 = 'Id_int3',
+  Id = 'Id',
+  GT = 'GT',
+  GE = 'GE',
 
-  Assignment,
+  Assignment = 'Assignment',
 
-  Plus,
-  Minus,
-  Star,
-  Slash,
+  Plus = 'Plus',
+  Minus = 'Minus',
+  Star = 'Star',
+  Slash = 'Slash',
 
-  SemiColon,
-  LeftParen,
-  RightParen,
+  SemiColon = 'SemiColon',
+  LeftParen = 'LeftParen',
+  RightParen = 'RightParen',
 
-  IntLiteral,
+  IntLiteral = 'IntLiteral',
 }
 
 export default class SimpleLexer {
@@ -48,19 +48,16 @@ export default class SimpleLexer {
   tokens = new Set<Token>()
 
   constructor() {
-    SimpleLexer.dump(this.tokenize('int age = 45;'))
-    SimpleLexer.dump(this.tokenize('inta age = 45'))
-    SimpleLexer.dump(this.tokenize('in age = 45;'))
-    SimpleLexer.dump(this.tokenize('age >= 45;'))
-    SimpleLexer.dump(this.tokenize('age > 45;'))
+    // SimpleLexer.dump(this.tokenize('int age=45;'))
+    // SimpleLexer.dump(this.tokenize('inta age=45;'))
+    // SimpleLexer.dump(this.tokenize('in age = 45;'))
+    // SimpleLexer.dump(this.tokenize('age >= 45;'))
+    // SimpleLexer.dump(this.tokenize('age > 45;'))
   }
 
   initToken(ch: string) {
-    const token = this.token
-    const tokens = this.tokens
-
-    if (token.text.length) {
-      tokens.add(token)
+    if (this.token.text.length) {
+      this.tokens.add(this.token)
 
       this.token = new Token()
     }
@@ -72,48 +69,48 @@ export default class SimpleLexer {
       // 更高的优先级
       else newState = DfaState.Id
 
-      token.type = TokenType.Identifier // 同时类型都为 Identifier
-      token.text += ch
+      this.token.type = TokenType.Identifier // 同时类型都为 Identifier
+      this.token.text += ch
     } else if (isDigit(ch)) {
       newState = DfaState.IntLiteral
-      token.type = TokenType.IntLiteral
-      token.text += ch
+      this.token.type = TokenType.IntLiteral
+      this.token.text += ch
     } else if (ch === '>') {
       newState = DfaState.GT
-      token.type = TokenType.GT
-      token.text += ch
+      this.token.type = TokenType.GT
+      this.token.text += ch
     } else if (ch === '+') {
       newState = DfaState.Plus
-      token.type = TokenType.Plus
-      token.text += ch
+      this.token.type = TokenType.Plus
+      this.token.text += ch
     } else if (ch === '-') {
       newState = DfaState.Minus
-      token.type = TokenType.Minus
-      token.text += ch
+      this.token.type = TokenType.Minus
+      this.token.text += ch
     } else if (ch === '*') {
       newState = DfaState.Star
-      token.type = TokenType.Star
-      token.text += ch
+      this.token.type = TokenType.Star
+      this.token.text += ch
     } else if (ch === '/') {
       newState = DfaState.Slash
-      token.type = TokenType.Slash
-      token.text += ch
+      this.token.type = TokenType.Slash
+      this.token.text += ch
     } else if (ch === ';') {
       newState = DfaState.SemiColon
-      token.type = TokenType.SemiColon
-      token.text += ch
+      this.token.type = TokenType.SemiColon
+      this.token.text += ch
     } else if (ch === '(') {
       newState = DfaState.LeftParen
-      token.type = TokenType.LeftParen
-      token.text += ch
+      this.token.type = TokenType.LeftParen
+      this.token.text += ch
     } else if (ch === ')') {
       newState = DfaState.RightParen
-      token.type = TokenType.RightParen
-      token.text += ch
+      this.token.type = TokenType.RightParen
+      this.token.text += ch
     } else if (ch === '=') {
       newState = DfaState.Assignment
-      token.type = TokenType.Assignment
-      token.text += ch
+      this.token.type = TokenType.Assignment
+      this.token.text += ch
     }
 
     return newState
