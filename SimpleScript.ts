@@ -39,6 +39,7 @@ async function read(round = 1) {
   } catch (error) {
     console.log(chalk.bgRed('Error: \n'))
     console.log(error)
+    read(++round)
   }
 }
 
