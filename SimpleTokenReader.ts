@@ -11,7 +11,7 @@ export default class SimpleTokenReader implements TokenReader {
 
   peek() {
     if (this.pos < this.tokens.length) {
-      return this.tokens[this.pos++]
+      return this.tokens[this.pos]
     }
     return null
   }
