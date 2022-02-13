@@ -1,7 +1,6 @@
 {
   "name": "study_compilation",
   "version": "1.0.0",
-  "description": "",
   "main": "index.ts",
   "type": "module",
   "scripts": {
@@ -15,5 +14,17 @@
     "ts-node": "^10.5.0",
     "typescript": "^4.5.5",
     "zx": "^4.3.0"
-  }
+  },
+  "dependencies": {
+    "mime-types": "^2.1.34"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/776A0A/study_compilation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/776A0A/study_compilation/issues"
+  },
+  "homepage": "https://github.com/776A0A/study_compilation#readme",
+  "description": ""
 }
