@@ -1,14 +1,9 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
 import { argv, chalk, question } from 'zx'
 import { ASTNode } from './interfaces/ASTNode'
 import SimpleParser from './SimpleParser'
 import { ASTNodeType } from './types/ASTNodeType'
 
 const verbose = argv.verbose ?? argv.v
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 
 if (verbose) {
   console.log(chalk.bgBlue('\nverbose mode.'))
@@ -23,13 +18,17 @@ async function read(round = 1) {
   try {
     console.log(chalk.blue(`---------- Round: ${round}. ----------\n`))
 
-    const script = (
-      await question(chalk.blue('Please input some script:\n'))
-    ).trim()
+    let scriptText = ''
 
-    if (script === 'exit();') return console.log(chalk.blue(`good bye!`))
+    while (!scriptText.endsWith(';')) {
+      scriptText += await question(chalk.blue('Please input some script:\n'))
+    }
 
-    const tree = parser.parse(script)
+    scriptText = scriptText.trim()
+
+    if (scriptText === 'exit();') return console.log(chalk.blue(`good bye!`))
+
+    const tree = parser.parse(scriptText)
 
     if (verbose) parser.dumpAST(tree, '')
 
@@ -99,6 +98,8 @@ function evaluate(node: ASTNode, indent: string) {
     case ASTNodeType.AssignmentStmt: {
       const varName = node.getText()
       if (!variables.has(varName)) throw Error(`unknown variable: ${varName}`)
+
+      break
     }
 
     case ASTNodeType.IntDeclaration:

@@ -40,8 +40,10 @@ export default class SimpleParser {
     let token = tokens.peek()
 
     if (token !== null && token.getType() === TokenType.Int) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       token = tokens.read()!
       if (tokens.peek()?.getType() === TokenType.Identifier) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         token = tokens.read()!
         node = new SimpleASTNode(ASTNodeType.IntDeclaration, token.getText())
         token = tokens.peek()
@@ -96,6 +98,7 @@ export default class SimpleParser {
     let token = tokens.peek()
 
     if (token !== null && token.getType() === TokenType.Identifier) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       token = tokens.read()!
       node = new SimpleASTNode(ASTNodeType.AssignmentStmt, token.getText())
       token = tokens.peek()
@@ -127,6 +130,7 @@ export default class SimpleParser {
     let node = child1
 
     if (child1 !== null) {
+      // eslint-disable-next-line no-constant-condition
       while (true) {
         let token = tokens.peek()
         if (
@@ -134,6 +138,7 @@ export default class SimpleParser {
           (token.getType() === TokenType.Plus ||
             token.getType() === TokenType.Minus)
         ) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           token = tokens.read()!
           const child2 = this.multiplicative(tokens)
           if (child2 !== null) {
@@ -157,6 +162,7 @@ export default class SimpleParser {
     let child1 = this.primary(tokens)
     let node = child1
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       let token = tokens.peek()
       if (
@@ -164,10 +170,12 @@ export default class SimpleParser {
         (token.getType() === TokenType.Star ||
           token.getType() === TokenType.Slash)
       ) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         token = tokens.read()!
         const child2 = this.primary(tokens)
         if (child2 !== null) {
           node = new SimpleASTNode(ASTNodeType.Multiplicative, token.getText())
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           node.addChild(child1!)
           node.addChild(child2)
           child1 = node
@@ -188,9 +196,11 @@ export default class SimpleParser {
 
     if (token !== null) {
       if (token.getType() === TokenType.IntLiteral) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         token = tokens.read()!
         node = new SimpleASTNode(ASTNodeType.IntLiteral, token.getText())
       } else if (token.getType() === TokenType.Identifier) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         token = tokens.read()!
         node = new SimpleASTNode(ASTNodeType.Identifier, token.getText())
       } else if (token.getType() === TokenType.LeftParen) {
@@ -215,6 +225,6 @@ export default class SimpleParser {
   dumpAST(node: ASTNode, indent: string) {
     console.log(chalk.cyan(`${indent}${node.getType()} ${node.getText()}`))
 
-    for (let child of node.getChildren()) this.dumpAST(child, indent + '\t')
+    for (const child of node.getChildren()) this.dumpAST(child, indent + '\t')
   }
 }

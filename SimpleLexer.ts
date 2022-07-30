@@ -10,37 +10,38 @@ import SimpleTokenReader from './SimpleTokenReader'
 import Token from './Token'
 import { TokenType } from './types/TokenType'
 
-enum DfaState {
-  Initial = 'Initial',
+// deterministic finite automaton
+const DfaState = {
+  Initial: Symbol('Initial'),
 
-  If = 'If',
-  Id_if1 = 'Id_if1',
-  Id_if2 = 'Id_if2',
-  Else = 'Else',
-  Id_else1 = 'Id_else1',
-  Id_else2 = 'Id_else2',
-  Id_else3 = 'Id_else3',
-  Id_else4 = 'Id_else4',
-  Int = 'Int',
-  Id_int1 = 'Id_int1',
-  Id_int2 = 'Id_int2',
-  Id_int3 = 'Id_int3',
-  Id = 'Id',
-  GT = 'GT',
-  GE = 'GE',
+  If: Symbol('If'),
+  Id_if1: Symbol('Id_if1'),
+  Id_if2: Symbol('Id_if2'),
+  Else: Symbol('Else'),
+  Id_else1: Symbol('Id_else1'),
+  Id_else2: Symbol('Id_else2'),
+  Id_else3: Symbol('Id_else3'),
+  Id_else4: Symbol('Id_else4'),
+  Int: Symbol('Int'),
+  Id_int1: Symbol('Id_int1'),
+  Id_int2: Symbol('Id_int2'),
+  Id_int3: Symbol('Id_int3'),
+  Id: Symbol('Id'),
+  GT: Symbol('GT'),
+  GE: Symbol('GE'),
 
-  Assignment = 'Assignment',
+  Assignment: Symbol('Assignment'),
 
-  Plus = 'Plus',
-  Minus = 'Minus',
-  Star = 'Star',
-  Slash = 'Slash',
+  Plus: Symbol('Plus'),
+  Minus: Symbol('Minus'),
+  Star: Symbol('Star'),
+  Slash: Symbol('Slash'),
 
-  SemiColon = 'SemiColon',
-  LeftParen = 'LeftParen',
-  RightParen = 'RightParen',
+  SemiColon: Symbol('SemiColon'),
+  LeftParen: Symbol('LeftParen'),
+  RightParen: Symbol('RightParen'),
 
-  IntLiteral = 'IntLiteral',
+  IntLiteral: Symbol('IntLiteral'),
 }
 
 export default class SimpleLexer {
