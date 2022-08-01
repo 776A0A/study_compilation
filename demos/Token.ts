@@ -1,4 +1,9 @@
 export default class Token {
-  text = ''
-  type: symbol | null = null
+  text: string
+  type: symbol | null
+
+  constructor(text = '', type = null as symbol | null) {
+    this.text = text
+    this.type = type
+  }
 }
