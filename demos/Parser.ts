@@ -196,20 +196,24 @@ export default class Parser {
   }
 
   dumpAst(node: AstNode) {
-    const dump = (node: AstNode, indent = '', level = 0) => {
-      log(
-        chalk.green(
-          `${indent}Level ${level}, Node type: ${node.type.toString()}, Node text: ${
-            node.text
-          }`,
-        ),
-      )
+    let tree = ``
 
+    const buildTree = (node: AstNode, level = 0) => {
+      tree += `${Array.from({ length: level }).reduce(
+        (str) => str + '    ',
+        '',
+      )}${level ? '└' : ''}${Array.from({ length: level }).reduce(
+        (str) => str + '──',
+        '',
+      )}  ${node.type.toString()}: ${node.text}\n\n`
       if (node.children.length) {
-        node.children.forEach((child) => dump(child, indent + '  ', level + 1))
+        node.children.forEach((child) => buildTree(child, level + 1))
       }
     }
 
-    dump(node)
+    buildTree(node)
+
+    log(chalk.green(`AST Tree: `))
+    log(chalk.green(tree))
   }
 }
