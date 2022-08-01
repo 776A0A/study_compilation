@@ -2,11 +2,9 @@ lockfileVersion: 5.4
 
 specifiers:
   '@dus/eslint-config': ^1.0.2
-  '@types/minimist': ^1.2.2
   '@types/node': ^17.0.45
   eslint: ^8.21.0
   mime-types: ^2.1.35
-  minimist: ^1.2.6
   npm-check-updates: ^16.0.4
   ts-node: ^10.9.1
   tsx: ^3.8.0
@@ -18,10 +16,8 @@ dependencies:
 
 devDependencies:
   '@dus/eslint-config': 1.0.2
-  '@types/minimist': 1.2.2
   '@types/node': 17.0.45
   eslint: 8.21.0
-  minimist: 1.2.6
   npm-check-updates: 16.0.4
   ts-node: 10.9.1_x2utdhayajzrh747hktprshhby
   tsx: registry.npmmirror.com/tsx/3.8.0

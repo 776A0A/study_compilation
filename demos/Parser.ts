@@ -1,16 +1,13 @@
 /* eslint-disable no-constant-condition */
+import { argv, chalk } from 'zx'
 import AstNode from './AstNode'
-import codes from './codes'
 import Lexer from './Lexer'
 import TokenReader from './TokenReader'
 import { AstType, TokenType } from './types'
 import { log } from './utils'
-import minimist from 'minimist'
 
-const argv = minimist(process.argv.slice(2))
-
-const logTokens = !!argv['log-tokens']
-const verbose = !!(argv.v || argv.verbose)
+const logTokens = !!argv.tokens
+const logAst = !!argv.ast
 
 /**
  * program ::= (statement)+
@@ -30,7 +27,7 @@ export default class Parser {
     log(`Parsing codes: 
     ${codes}`)
 
-    logTokens && log(tokens)
+    logTokens && log(chalk.blue(tokens))
 
     const reader = new TokenReader(tokens)
     return this.buildAst(reader)
@@ -49,7 +46,7 @@ export default class Parser {
       else throw Error('Unknown statement.')
     }
 
-    verbose && this.dumpAst(root)
+    logAst && this.dumpAst(root)
 
     return root
   }
@@ -63,19 +60,20 @@ export default class Parser {
       if (reader.peek()?.type === TokenType.Identifier) {
         token = reader.read()! // Id
         node = new AstNode(AstType.IntDeclaration, token.text)
+
         if (reader.peek()?.type === TokenType.Assignment) {
           reader.read() // =
           const child = this.additive(reader)
           if (child !== null) node.addChild(child)
           else throw Error('Should be expression after Assignment.')
         }
+
+        if (reader.peek()?.type !== TokenType.SemiColon) {
+          throw Error('Missing colon after int declaration.')
+        } else reader.read()
       } else {
         throw Error('Should be Identifier after int keyword.')
       }
-
-      if (reader.peek()?.type !== TokenType.SemiColon) {
-        throw Error('Missing colon after int declaration.')
-      } else reader.read()
     }
 
     return node
@@ -200,9 +198,11 @@ export default class Parser {
   dumpAst(node: AstNode) {
     const dump = (node: AstNode, indent = '', level = 0) => {
       log(
-        `${indent}Level ${level}, Node type: ${node.type.toString()}, Node text: ${
-          node.text
-        }`,
+        chalk.green(
+          `${indent}Level ${level}, Node type: ${node.type.toString()}, Node text: ${
+            node.text
+          }`,
+        ),
       )
 
       if (node.children.length) {
@@ -213,7 +213,3 @@ export default class Parser {
     dump(node)
   }
 }
-
-const parser = new Parser()
-
-parser.parse(codes)
