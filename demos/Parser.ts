@@ -5,6 +5,12 @@ import Lexer from './Lexer'
 import TokenReader from './TokenReader'
 import { AstType, TokenType } from './types'
 import { log } from './utils'
+import minimist from 'minimist'
+
+const argv = minimist(process.argv.slice(2))
+
+const logTokens = !!argv['log-tokens']
+const verbose = !!(argv.v || argv.verbose)
 
 /**
  * program ::= (statement)+
@@ -21,8 +27,11 @@ export default class Parser {
   parse(codes: string) {
     const lexer = new Lexer()
     const tokens = lexer.tokenize(codes)
-    log(codes)
-    // log(tokens)
+    log(`Parsing codes: 
+    ${codes}`)
+
+    logTokens && log(tokens)
+
     const reader = new TokenReader(tokens)
     return this.buildAst(reader)
   }
@@ -39,6 +48,8 @@ export default class Parser {
       if (node !== null) root.addChild(node)
       else throw Error('Unknown statement.')
     }
+
+    verbose && this.dumpAst(root)
 
     return root
   }
@@ -63,7 +74,6 @@ export default class Parser {
       }
 
       if (reader.peek()?.type !== TokenType.SemiColon) {
-        log(reader.peek()?.text)
         throw Error('Missing colon after int declaration.')
       } else reader.read()
     }
@@ -87,7 +97,28 @@ export default class Parser {
   }
 
   assignmentStmt(reader: TokenReader) {
-    let node: AstNode | null = null
+    let node: AstNode | null = null,
+      token = reader.peek()
+
+    if (token?.type === TokenType.Identifier) {
+      token = reader.read()!
+      if (reader.peek()?.type === TokenType.Assignment) {
+        node = new AstNode(AstType.AssignmentStmt, token.text)
+        reader.read() // =
+        const child = this.additive(reader)
+        if (child !== null) {
+          node.addChild(child)
+
+          if (reader.peek()?.type !== TokenType.SemiColon) {
+            throw Error('Missing colon after assignment statement.')
+          } else reader.read()
+        } else {
+          throw Error(`Expecting an expression after =.`)
+        }
+      } else {
+        reader.unread()
+      }
+    }
 
     return node
   }
@@ -185,4 +216,4 @@ export default class Parser {
 
 const parser = new Parser()
 
-parser.dumpAst(parser.parse(codes))
+parser.parse(codes)
