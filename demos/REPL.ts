@@ -49,43 +49,49 @@ export default class REPL {
 
     switch (node.type) {
       case AstType.Additive:
-        result = node.children.reduce(
-          (total, item) => total + this.evaluate(item, indent + '  '),
-          0,
+      case AstType.Multiplicative: {
+        const calc = Function(
+          'total',
+          'item',
+          'indent',
+          `return this.evaluate(item, indent) ${node.text} total`,
+        ).bind(this)
+
+        result = node.children.reduceRight(
+          (total, item) => calc(total, item, indent + '  '),
+          node.type === AstType.Additive ? 0 : 1,
         )
         break
+      }
 
-      case AstType.Multiplicative:
-        result = node.children.reduce(
-          (total, item) => total * this.evaluate(item, indent + '  '),
-          1,
-        )
-        break
-
-      case AstType.IntLiteral:
+      case AstType.IntLiteral: {
         result = Number(node.text)
         break
+      }
 
-      case AstType.Identifier:
+      case AstType.Identifier: {
         if (!this.variables.has(node.text))
           throw Error(`Unknown variable ${node.text}.`)
 
         result = Number(this.variables.get(node.text))
         break
+      }
 
-      case AstType.AssignmentStmt:
+      case AstType.AssignmentStmt: {
         if (!this.variables.has(node.text))
           throw Error(`Unknown variable ${node.text}.`)
 
         result = this.evaluate(node.children.at(0)!, indent + '  ')
         this.variables.set(node.text, result)
         break
+      }
 
-      case AstType.IntDeclaration:
+      case AstType.IntDeclaration: {
         const child = node.children.at(0)
         result = child ? this.evaluate(child, indent + '  ') : result
         this.variables.set(node.text, result)
         break
+      }
     }
 
     return result
