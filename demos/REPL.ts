@@ -8,7 +8,7 @@ const verbose = !!argv.verbose
 
 export default class REPL {
   parser = new Parser()
-  variables = new Map<string, number>()
+  variables = new Map<string, number | null>()
 
   async read() {
     const ask = async () => {
@@ -42,10 +42,10 @@ export default class REPL {
     }
   }
 
-  evaluate(node: AstNode, indent = '') {
+  evaluate(node: AstNode, indent = ''): number | null {
     verbose && log(`${indent}Evaluating ${node.text}`)
 
-    let result = 0
+    let result: number | null = null
 
     switch (node.type) {
       case AstType.Additive:
