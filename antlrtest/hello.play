@@ -1,4 +1,0 @@
-int age = 45;
-if (age >= 17 + 8 + 20) {
-  printf("hello old man!")
-}
