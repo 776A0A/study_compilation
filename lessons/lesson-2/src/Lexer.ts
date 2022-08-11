@@ -4,13 +4,21 @@ import NumToken from './NumToken'
 import StrToken from './StrToken'
 import Token from './Token'
 
-const regexPat =
-  /\s*((?<comment>\/\/.*)|(?<int>\d+)|(?<str>"(\\"|\\\\|\\n|[^"])*")|(?<identifier>[a-zA-Z_]\w*)|(?<operator>(==|<=|>=|&&|\\|\\))|(?<punct>[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]))?/g
+const space = '\\s*'
+const comment = '?<comment>\\/\\/.*'
+const int = '?<int>\\d+'
+const str = '?<str>"(\\\\"|\\\\\\\\|\\\\n|[^"])*"'
+const id = '?<id>[a-zA-Z_]\\w*'
+const operator = '?<operator>==|>=|<=|&&|\\|\\|'
+const punct = `?<punct>[!"#$%&'()*+,-./:;<=>?@\\[\\]^_\`{|}~]`
+
+const regexStr = `${space}((${comment})|(${int})|(${str})|(${id})|(${operator})|(${punct}))?`
 
 export default class Lexer {
   queue: Token[] = []
   hasMore = true
   reader: LineNumberReader
+  regexPat = new RegExp(regexStr, 'g')
 
   constructor(codes: string) {
     this.reader = new LineNumberReader(codes)
@@ -43,7 +51,7 @@ export default class Lexer {
     }
 
     const lineNo = this.reader.getLineNumber()
-    const matched = line.matchAll(regexPat)
+    const matched = line.matchAll(this.regexPat)
 
     for (const m of matched) {
       this.addToken(lineNo, m)
@@ -76,7 +84,7 @@ export default class Lexer {
       case 'str':
         token = new StrToken(lineNo, raw.text.slice(1, -1))
         break
-      case 'identifier':
+      case 'id':
         token = new IdToken(lineNo, raw.text)
         break
       default:
