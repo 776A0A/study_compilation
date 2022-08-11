@@ -31,6 +31,7 @@ export default class Lexer {
   }
 
   read() {
+    // 如果 queue 是空的，则读取新的一行，并拆解出 token 加入 queue 中
     if (this.fillQueue(0)) return this.queue.shift()
     else return Token.EOF
   }
