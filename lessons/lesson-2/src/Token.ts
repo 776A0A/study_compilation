@@ -29,7 +29,7 @@ export default class Token {
     throw new StoneError('not number token')
   }
 
-  getText() {
+  getText(): string {
     return ''
   }
 }
