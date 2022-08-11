@@ -14,6 +14,12 @@ const punct = `?<punct>[!"#$%&'()*+,-./:;<=>?@\\[\\]^_\`{|}~]`
 
 const regexStr = `${space}((${comment})|(${int})|(${str})|(${id})|(${operator})|(${punct}))?`
 
+/**
+ * expression: term { ("+" | "-") term }
+ * term: factor { ("*" | "/") factor }
+ * factor: NUMBER | "(" expression ")"
+ */
+
 export default class Lexer {
   queue: Token[] = []
   hasMore = true

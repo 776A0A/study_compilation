@@ -25,7 +25,7 @@ export default class Token {
     return false
   }
 
-  getNumber() {
+  getNumber(): number {
     throw new StoneError('not number token')
   }
 

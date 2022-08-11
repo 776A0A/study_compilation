@@ -1,4 +1,4 @@
-import AstTree from './AstTree'
+import AstTree from './Ast/AstTree'
 
 export default class StoneError extends Error {
   constructor(message?: string)
